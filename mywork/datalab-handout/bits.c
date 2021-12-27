@@ -222,7 +222,13 @@ int negate(int x) {
  *   Rating: 3
  */
 int isAsciiDigit(int x) {
-  return 2;
+  // is 110xxx? is 0x30 - 0x37
+  int cond1 = !((x >> 3) ^ 0x6);
+  // is 111000? is 0x38
+  int cond2 = !(x ^ 0x38);
+  // is 111001? is 0x39
+  int cond3 = !(x ^ 0x39);
+  return cond1 | cond2 | cond3;
 }
 /* 
  * conditional - same as x ? y : z 
@@ -232,7 +238,18 @@ int isAsciiDigit(int x) {
  *   Rating: 3
  */
 int conditional(int x, int y, int z) {
-  return 2;
+  // 如果x为true，那么0xff & y, 0x0 & z -> return y
+  // x为false, 那么0x0 & y, 0xff & z -> return z
+
+  // x = 1 2 3 4(true),then x = 0(false)
+  // x = 0(false), then x = 1(true)
+  x = !x;
+  // x = true, then x = 0x0;
+  // x = false, then x = 0xFF;
+  x = (x<<31)>>31;
+  // if x = true, !x = false, ~x = true(0xFF);
+  // if x = false, !x = true, x = true(0xFF);
+  return (~x & y) | (x & z);
 }
 /* 
  * isLessOrEqual - if x <= y  then return 1, else return 0 
