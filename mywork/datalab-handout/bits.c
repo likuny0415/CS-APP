@@ -259,6 +259,7 @@ int conditional(int x, int y, int z) {
  *   Rating: 3
  */
 int isLessOrEqual(int x, int y) {
+  // not started
   return 2;
 }
 //4
